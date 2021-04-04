@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Login -->
+    <string name="error_login_000">아이디를 입력하세요.</string>
+    <string name="error_login_001">비밀번호를 입력하세요.</string>
+
+    <!-- Sign Up -->
+    <string name="error_sign_up_000">비밀번호가 일치하지 않습니다.</string>
+</resources>

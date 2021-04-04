@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="layout_spacing_small">8dp</dimen>
+    <dimen name="layout_spacing_medium">16dp</dimen>
+    <dimen name="layout_spacing_large">32dp</dimen>
+    <dimen name="layout_spacing_extra_large">64dp</dimen>
+
+    <dimen name="view_spacing_small">8dp</dimen>
+    <dimen name="view_spacing_medium">16dp</dimen>
+    <dimen name="view_spacing_large">24dp</dimen>
+    <dimen name="view_spacing_extra_large">48dp</dimen>
+
+    <dimen name="login_button_height">56dp</dimen>
+</resources>

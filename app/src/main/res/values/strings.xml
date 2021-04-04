@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Travels</string>
+    <string name="client_id">418040417823-n6iv46bvpb495d0dv85ch2diesguvaut.apps.googleusercontent.com</string>
+    <string name="client_secret">wrdqyCB89_1Cyyoi9ZRYH1WP</string>
+
+    <string name="ok">확인</string>
+
+    <!-- Entry -->
+    <string name="login">로그인</string>
+    <string name="sign_up">회원가입</string>
+    <string name="user_id">UserId</string>
+    <string name="password">Password</string>
+
+    <!-- Facebook -->
+    <string name="facebook_app_id">240565534428057</string>
+    <string name="fb_login_protocol_scheme">fb240565534428057</string>
+
+    <!-- Kakao -->
+    <string name="native_app_key">be3db26cde9668f9593435c66f9eadfe</string>
+
+    <!-- Login -->
+    <string name="find_password">비밀번호 찾기</string>
+
+    <!-- Sign Up -->
+    <string name="password_confirm">PasswordConfirm</string>
+</resources>
