@@ -1,24 +1,27 @@
 package com.duke.orca.android.kotlin.travels.base
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.*
 
 abstract class BaseFragment: Fragment() {
-    @Suppress("MemberVisibilityCanBePrivate")
-    protected val job = Job()
-    protected val fragmentScope = CoroutineScope(Dispatchers.Main + job)
-
+    @CallSuper
     override fun onStart() {
         super.onStart()
         initializeToolbar()
     }
 
     abstract fun initializeToolbar()
-    abstract fun initializeView()
 
     protected fun showToast(text: String, duration: Int = Toast.LENGTH_SHORT) {
-        fragmentScope.launch {
+        lifecycleScope.launch {
             Toast.makeText(requireContext(), text, duration).show()
         }
     }

@@ -16,7 +16,6 @@ interface LoginRepository {
 
     fun loginWithGoogle(
         activity: Activity,
-        @MainThread onSuccess: () -> Unit,
         @MainThread onFailure: (Throwable?) -> Unit
     )
 

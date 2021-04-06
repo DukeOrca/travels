@@ -2,7 +2,6 @@ package com.duke.orca.android.kotlin.travels.application
 
 import android.app.Application
 import com.duke.orca.android.kotlin.travels.R
-import com.duke.orca.android.kotlin.travels.util.printHashKey
 import com.kakao.sdk.common.KakaoSdk
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber

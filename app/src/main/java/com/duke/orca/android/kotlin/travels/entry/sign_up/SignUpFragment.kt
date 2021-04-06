@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.duke.orca.android.kotlin.travels.R
 import com.duke.orca.android.kotlin.travels.base.BaseFragment
 import com.duke.orca.android.kotlin.travels.databinding.FragmentSignUpBinding
@@ -39,7 +40,7 @@ class SignUpFragment: BaseFragment() {
         }
     }
 
-    override fun initializeView() {
+    private fun initializeView() {
         viewBinding?.materialButtonSignUp?.setOnClickListener {
             if (isUserIdAvailable().not()) {
                 viewBinding?.sugarEditTextUserId?.setError(getString(R.string.error_login_000))
@@ -53,7 +54,7 @@ class SignUpFragment: BaseFragment() {
 
             if (viewBinding?.sugarEditTextPassword?.text() == viewBinding?.sugarEditTextPasswordConfirm?.text()) {
                 // TODO: ADD: Sign up.
-                    fragmentScope.launch {
+                    lifecycleScope.launch {
                         withContext(Dispatchers.IO) {
                             val signUp = EntryApi.signUpService().getSignUpAsync(
                                 email = "l123aaocustman111",

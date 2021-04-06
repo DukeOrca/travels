@@ -1,5 +1,6 @@
 package com.duke.orca.android.kotlin.travels.entry.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -11,6 +12,7 @@ import com.duke.orca.android.kotlin.travels.base.BaseFragment
 import com.duke.orca.android.kotlin.travels.databinding.FragmentLoginBinding
 import com.duke.orca.android.kotlin.travels.entry.EntryActivity
 import com.duke.orca.android.kotlin.travels.entry.EntryViewModel
+import com.duke.orca.android.kotlin.travels.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -39,7 +41,7 @@ class LoginFragment: BaseFragment() {
         }
     }
 
-    override fun initializeView() {
+    private fun initializeView() {
         viewBinding?.materialButtonLogin?.setOnClickListener {
             if (isUserIdAvailable().not()) {
                 viewBinding?.sugarEditTextUserId?.setError(getString(R.string.error_login_000))
@@ -53,9 +55,8 @@ class LoginFragment: BaseFragment() {
         }
 
         viewBinding?.loginButtonFacebook?.setOnClickListener {
-            viewModel.loginWithFacebook(
-                requireActivity(), { token ->
-                    showToast("onSuccess")
+            viewModel.loginWithFacebook(requireActivity(), { token ->
+                    startMainActivity()
                 }, {
                     Timber.e(it)
                 }
@@ -63,19 +64,14 @@ class LoginFragment: BaseFragment() {
         }
 
         viewBinding?.loginButtonGoogle?.setOnClickListener {
-            viewModel.loginWithGoogle(
-                requireActivity(), {
-
-                }, {
-                    Timber.e(it)
-                }
-            )
+            viewModel.loginWithGoogle(requireActivity()) {
+                Timber.e(it)
+            }
         }
 
         viewBinding?.loginButtonKakao?.setOnClickListener {
-            viewModel.loginWithKakao(
-                requireContext(), { token ->
-                    showToast("onSuccess")
+            viewModel.loginWithKakao(requireContext(), { token ->
+                    startMainActivity()
                 }, {
                     Timber.e(it)
                 }
@@ -84,7 +80,7 @@ class LoginFragment: BaseFragment() {
 
         viewBinding?.loginButtonNaver?.setOnClickListener {
             viewModel.loginWithNaver(requireActivity(), { accessToken, refreshToken, expiresAt, tokenType ->
-
+                startMainActivity()
             }, { errorCode, errorDesc ->
                 Timber.e("errorCode $errorCode")
                 Timber.e("errorDesc $errorDesc")
@@ -108,5 +104,13 @@ class LoginFragment: BaseFragment() {
 
     private fun isPasswordAvailable(): Boolean {
         return viewBinding?.sugarEditTextPassword?.isNotBlank() ?: false
+    }
+
+    private fun startMainActivity() {
+        val intent = Intent(requireContext(), MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
+
+        startActivity(intent)
     }
 }

@@ -23,4 +23,7 @@
 
     <!-- Sign Up -->
     <string name="password_confirm">PasswordConfirm</string>
+
+    <!-- TouristSpotsFragment -->
+    <string name="tourist_spots_fragment_000">나의 여행지</string>
 </resources>

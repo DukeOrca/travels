@@ -34,7 +34,7 @@ class EntryFragment: BaseFragment() {
         }
     }
 
-    override fun initializeView() {
+    private fun initializeView() {
         viewBinding?.materialButtonLogin?.setOnClickListener {
             findNavController().navigate(EntryFragmentDirections.actionEntryFragmentToLoginFragment())
         }
