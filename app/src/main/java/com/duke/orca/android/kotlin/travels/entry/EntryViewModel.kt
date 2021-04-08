@@ -3,6 +3,7 @@ package com.duke.orca.android.kotlin.travels.entry
 import android.app.Activity
 import android.content.Context
 import androidx.annotation.MainThread
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import com.duke.orca.android.kotlin.travels.entry.login.repository.LoginRepositoryImpl
 import com.facebook.CallbackManager
@@ -19,11 +20,11 @@ class EntryViewModel @Inject constructor() : ViewModel() {
     fun callbackManager(): CallbackManager = callbackManager
 
     fun loginWithFacebook(
-        activity: Activity,
+        fragment: Fragment,
         @MainThread onSuccess: (token: String) -> Unit,
         @MainThread onFailure: (Throwable?) -> Unit
     ) {
-        loginRepository.loginWithFacebook(activity, callbackManager, onSuccess, onFailure)
+        loginRepository.loginWithFacebook(callbackManager, fragment, onSuccess, onFailure)
     }
 
     fun loginWithGoogle(

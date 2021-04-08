@@ -3,6 +3,7 @@ package com.duke.orca.android.kotlin.travels.entry.login.repository
 import android.app.Activity
 import android.content.Context
 import androidx.annotation.MainThread
+import androidx.fragment.app.Fragment
 import com.duke.orca.android.kotlin.travels.R
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -32,31 +33,33 @@ class LoginRepositoryImpl: LoginRepository {
 
     /** Facebook */
     override fun loginWithFacebook(
-        activity: Activity,
         callbackManager: CallbackManager,
+        fragment: Fragment,
         @MainThread onSuccess: (token: String) -> Unit,
         @MainThread onFailure: (Throwable?) -> Unit
     ) {
-        LoginManager.getInstance().loginBehavior = LoginBehavior.NATIVE_WITH_FALLBACK
-        LoginManager.getInstance().logInWithReadPermissions(activity, listOf("public_profile", "email"))
-        LoginManager.getInstance().registerCallback(callbackManager,
-            object : FacebookCallback<LoginResult> {
-                override fun onSuccess(result: LoginResult?) {
-                    result?.accessToken?.token?.let {
-                        onSuccess(it)
-                    } ?: run {
-                        onFailure(NullPointerException("token: null"))
+        LoginManager.getInstance().apply {
+            loginBehavior = LoginBehavior.NATIVE_WITH_FALLBACK
+            logInWithReadPermissions(fragment, listOf("public_profile", "email"))
+            registerCallback(callbackManager,
+                object : FacebookCallback<LoginResult> {
+                    override fun onSuccess(result: LoginResult?) {
+                        result?.accessToken?.token?.let {
+                            onSuccess(it)
+                        } ?: run {
+                            onFailure(NullPointerException("token: null"))
+                        }
                     }
-                }
 
-                override fun onCancel() {
-                    Timber.w("onCancel")
-                }
+                    override fun onCancel() {
+                        Timber.w("onCancel")
+                    }
 
-                override fun onError(error: FacebookException?) {
-                    onFailure(error)
-                }
-            })
+                    override fun onError(error: FacebookException?) {
+                        onFailure(error)
+                    }
+                })
+        }
     }
 
     /** Google */

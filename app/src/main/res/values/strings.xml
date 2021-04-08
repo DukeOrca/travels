@@ -18,8 +18,21 @@
     <!-- Kakao -->
     <string name="native_app_key">be3db26cde9668f9593435c66f9eadfe</string>
 
-    <!-- Login -->
-    <string name="find_password">비밀번호 찾기</string>
+    <!-- LoginFragment -->
+    <string name="login_fragment_000">비밀번호 찾기</string>
+    <string name="login_fragment_001">Facebook login failure</string>
+    <string name="login_fragment_002">Google login failure</string>
+    <string name="login_fragment_003">Kakao login failure</string>
+    <string name="login_fragment_004">Naver login failure</string>
+
+    <!-- MainFragment -->
+    <string-array name="main_tab_item">
+        <item>Home</item>
+        <item>Todo</item>
+        <item>Map</item>
+        <item>Message</item>
+        <item>Setting</item>
+    </string-array>
 
     <!-- Sign Up -->
     <string name="password_confirm">PasswordConfirm</string>

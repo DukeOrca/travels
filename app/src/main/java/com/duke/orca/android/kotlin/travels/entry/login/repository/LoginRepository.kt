@@ -3,13 +3,14 @@ package com.duke.orca.android.kotlin.travels.entry.login.repository
 import android.app.Activity
 import android.content.Context
 import androidx.annotation.MainThread
+import androidx.fragment.app.Fragment
 import com.facebook.CallbackManager
 import com.kakao.sdk.auth.model.OAuthToken
 
 interface LoginRepository {
     fun loginWithFacebook(
-        activity: Activity,
         callbackManager: CallbackManager,
+        fragment: Fragment,
         @MainThread onSuccess: (token: String) -> Unit,
         @MainThread onFailure: (Throwable?) -> Unit
     )

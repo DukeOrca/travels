@@ -12,7 +12,12 @@ import com.duke.orca.android.kotlin.travels.base.BaseFragment
 import com.duke.orca.android.kotlin.travels.databinding.FragmentLoginBinding
 import com.duke.orca.android.kotlin.travels.entry.EntryActivity
 import com.duke.orca.android.kotlin.travels.entry.EntryViewModel
+import com.duke.orca.android.kotlin.travels.entry.RequestCode
 import com.duke.orca.android.kotlin.travels.main.MainActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -55,9 +60,12 @@ class LoginFragment: BaseFragment() {
         }
 
         viewBinding?.loginButtonFacebook?.setOnClickListener {
-            viewModel.loginWithFacebook(requireActivity(), { token ->
+            viewModel.loginWithFacebook(this, { token ->
+                    getString(R.string.client_id)
                     startMainActivity()
                 }, {
+                getString(R.string.client_id)
+                    showToast(it?.message ?: getString(R.string.login_fragment_001))
                     Timber.e(it)
                 }
             )
@@ -108,9 +116,14 @@ class LoginFragment: BaseFragment() {
 
     private fun startMainActivity() {
         val intent = Intent(requireContext(), MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         }
 
         startActivity(intent)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        viewModel.callbackManager().onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

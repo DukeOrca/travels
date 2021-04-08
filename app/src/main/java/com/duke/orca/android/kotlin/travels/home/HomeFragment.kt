@@ -4,12 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.duke.orca.android.kotlin.travels.base.MainTabFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.duke.orca.android.kotlin.travels.base.MainTabItemFragment
 import com.duke.orca.android.kotlin.travels.databinding.FragmentHomeBinding
+import com.duke.orca.android.kotlin.travels.home.adapter.TourAdapter
 
-class HomeFragment: MainTabFragment<FragmentHomeBinding>() {
+class HomeFragment: MainTabItemFragment<FragmentHomeBinding>() {
     override fun inflate(inflater: LayoutInflater, container: ViewGroup?): FragmentHomeBinding {
         return FragmentHomeBinding.inflate(inflater, container, false)
+    }
+
+    private val tourAdapter = TourAdapter {
+
     }
 
     override fun onCreateView(
@@ -19,9 +25,10 @@ class HomeFragment: MainTabFragment<FragmentHomeBinding>() {
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
+        initializeAdapter()
+
         viewModel.tourlist.observe(viewLifecycleOwner, {
-            println("gggggggggg")
-            println(it)
+            tourAdapter.submitList(it)
         })
 
         return view
@@ -29,7 +36,9 @@ class HomeFragment: MainTabFragment<FragmentHomeBinding>() {
 
     private fun initializeAdapter() {
         viewBinding.recyclerView.apply {
-
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = tourAdapter
         }
     }
 }

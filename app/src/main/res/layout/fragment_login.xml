@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/layout_spacing_large"
         android:layout_marginBottom="@dimen/layout_spacing_large"
-        android:text="@string/find_password"
+        android:text="@string/login_fragment_000"
         app:layout_constraintBottom_toTopOf="@+id/material_button_login"
         app:layout_constraintEnd_toEndOf="parent" />
 
