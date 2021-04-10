@@ -3,7 +3,14 @@
     <!-- Login -->
     <string name="error_login_000">아이디를 입력하세요.</string>
     <string name="error_login_001">비밀번호를 입력하세요.</string>
+    <string name="error_login_002">Facebook login failure</string>
+    <string name="error_login_003">Google login failure</string>
+    <string name="error_login_004">Kakao login failure</string>
+    <string name="error_login_005">Naver login failure</string>
 
-    <!-- Sign Up -->
-    <string name="error_sign_up_000">비밀번호가 일치하지 않습니다.</string>
+    <!-- SignUp -->
+    <string name="error_sign_up_000">아이디를 입력하세요.</string>
+    <string name="error_sign_up_001">비밀번호를 입력하세요.</string>
+    <string name="error_sign_up_002">비밀번호가 일치하지 않습니다.</string>
+    <string name="error_sign_up_003">회원가입에 실패했습니다.</string>
 </resources>

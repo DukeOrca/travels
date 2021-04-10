@@ -25,7 +25,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 
-
 class MainFragment: Fragment() {
     private val duration = 200
     private var viewBinding: FragmentMainBinding? = null
@@ -92,7 +91,7 @@ class MainFragment: Fragment() {
     }
 
     private fun animateSelectedTab(tab: TabLayout.Tab) {
-        tab.customView?.findViewById<TextView>(R.id.text_view)?.fadeOut(duration)
+        tab.customView?.findViewById<TextView>(R.id.text_view)?.fadeOut(duration / 2)
         tab.view.scale(1.5F, duration)
         tab.customView?.findViewById<ImageView>(R.id.image_view)?.setColorFilter(
             getColor(R.color.white),
@@ -105,7 +104,7 @@ class MainFragment: Fragment() {
     }
 
     private fun animateUnselectedTab(tab: TabLayout.Tab) {
-        tab.customView?.findViewById<TextView>(R.id.text_view)?.fadeIn(duration)
+        tab.customView?.findViewById<TextView>(R.id.text_view)?.fadeIn(duration / 2)
         tab.view.scale(1.0F, duration)
         tab.customView?.findViewById<ImageView>(R.id.image_view)?.setColorFilter(
             getColor(R.color.lime_green),

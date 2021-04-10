@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Travels</string>
+    <string name="app_name">여행기</string>
     <string name="client_id">418040417823-n6iv46bvpb495d0dv85ch2diesguvaut.apps.googleusercontent.com</string>
     <string name="client_secret">wrdqyCB89_1Cyyoi9ZRYH1WP</string>
 
@@ -20,10 +20,6 @@
 
     <!-- LoginFragment -->
     <string name="login_fragment_000">비밀번호 찾기</string>
-    <string name="login_fragment_001">Facebook login failure</string>
-    <string name="login_fragment_002">Google login failure</string>
-    <string name="login_fragment_003">Kakao login failure</string>
-    <string name="login_fragment_004">Naver login failure</string>
 
     <!-- MainFragment -->
     <string-array name="main_tab_item">

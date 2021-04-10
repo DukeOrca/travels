@@ -1,13 +1,14 @@
-package com.duke.orca.android.kotlin.travels.network
+package com.duke.orca.android.kotlin.travels.entry.network
 
+import com.duke.orca.android.kotlin.travels.entry.login.data.LoginResponse
+import com.duke.orca.android.kotlin.travels.entry.sign_up.data.SignUpResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 object EntryApi {
     object Provider {
@@ -37,26 +38,32 @@ object EntryApi {
     }
 
     interface LoginService {
-
+        @Headers("Content-Type: application/json")
+        @POST("login.php")
+        fun getLoginAsync(
+            @Body body: HashMap<String, String>
+        ): Deferred<LoginResponse>
     }
 
     interface SignUpService {
         @Suppress("SpellCheckingInspection")
-        @GET("signup.php")
+        @Headers("Content-Type: application/json")
+        @POST("signup.php")
         fun getSignUpAsync(
-            @Query("email") email: String,
-            @Query("password") password: String,
-            @Query("provider") provider: String = "N",
-            @Query("token") token: String = "testtoken",
-            @Query("nickname") nickname: String = "nickname"
-        ): Deferred<Response>
+            @Body body: HashMap<String, String>
+        ): Deferred<SignUpResponse>
     }
 
+    fun createSignUpBody(email: String, password: String, provider: String, token: String, nickname: String): HashMap<String, String> {
+        return hashMapOf(
+            "email" to email,
+            "password" to password,
+            "provider" to provider,
+            "token" to token,
+            "nickname" to nickname
+        )
+    }
+
+    fun loginService(): LoginService = createRetrofit().create(LoginService::class.java)
     fun signUpService(): SignUpService = createRetrofit().create(SignUpService::class.java)
 }
-
-data class Response(
-    val success: Boolean,
-    val data: String,
-    val message: String
-)

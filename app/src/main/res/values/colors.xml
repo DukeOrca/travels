@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="lime_green">#32CD32</color>
+    <color name="lime_green_variant">#28a428</color>
+
+    <color name="button_background">@color/white</color>
+    <color name="button_text">@color/lime_green</color>
 </resources>

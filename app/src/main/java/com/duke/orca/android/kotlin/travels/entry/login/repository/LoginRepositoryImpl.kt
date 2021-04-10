@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import com.duke.orca.android.kotlin.travels.R
+import com.duke.orca.android.kotlin.travels.entry.login.data.LoginResponse
+import com.duke.orca.android.kotlin.travels.entry.network.EntryApi
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -22,6 +24,8 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.lang.NullPointerException
 import java.lang.ref.WeakReference
@@ -29,6 +33,36 @@ import java.lang.ref.WeakReference
 class LoginRepositoryImpl: LoginRepository {
     object RequestCode {
         const val GoogleSignIn = 105
+    }
+
+    /** Email */
+    override suspend fun loginWithEmail(
+        email: String,
+        password: String,
+        onSuccess: (data: LoginResponse) -> Unit,
+        onFailure: (message: String) -> Unit
+    ) {
+        withContext(Dispatchers.IO) {
+            try {
+                val response = EntryApi.loginService().getLoginAsync(
+                    hashMapOf(
+                        "email" to email,
+                        "password" to password
+                    )
+                ).await()
+
+                withContext(Dispatchers.Main) {
+                    if (response.success)
+                        onSuccess(response)
+                    else
+                        onFailure(response.message)
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    onFailure("Email login failed.")
+                }
+            }
+        }
     }
 
     /** Facebook */

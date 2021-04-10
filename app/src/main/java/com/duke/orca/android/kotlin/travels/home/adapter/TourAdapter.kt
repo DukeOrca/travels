@@ -10,6 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.duke.orca.android.kotlin.travels.databinding.TourBinding
 import com.duke.orca.android.kotlin.travels.home.data.Tour
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,7 +24,7 @@ class TourAdapter(private val onItemClick: (Tour) -> Unit): ListAdapter<Tour, To
             binding.textViewBeginDate.text = item.tourbegindate.format()
             binding.textViewBeginTime.text = item.tourbegintime
 
-            println("AAAAABBB: ${item.tourimg}")
+            Timber.d("tourimg: ${item.tourimg}")
 
             Glide.with(binding.root.context)
                 .load(item.tourimg)

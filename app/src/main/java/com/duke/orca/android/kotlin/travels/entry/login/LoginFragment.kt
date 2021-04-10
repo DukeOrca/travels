@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.duke.orca.android.kotlin.travels.R
 import com.duke.orca.android.kotlin.travels.base.BaseFragment
@@ -24,7 +25,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class LoginFragment: BaseFragment() {
     private var viewBinding: FragmentLoginBinding? = null
-    private val viewModel: EntryViewModel by viewModels()
+    private val viewModel: EntryViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,15 +49,31 @@ class LoginFragment: BaseFragment() {
 
     private fun initializeView() {
         viewBinding?.materialButtonLogin?.setOnClickListener {
-            if (isUserIdAvailable().not()) {
+            val userId = viewBinding?.sugarEditTextUserId?.text() ?: run {
                 viewBinding?.sugarEditTextUserId?.setError(getString(R.string.error_login_000))
                 return@setOnClickListener
             }
 
-            if (isPasswordAvailable().not()) {
+            val password = viewBinding?.sugarEditTextPassword?.text() ?: run {
                 viewBinding?.sugarEditTextPassword?.setError(getString(R.string.error_login_001))
                 return@setOnClickListener
             }
+
+            if (userId.isBlank()) {
+                viewBinding?.sugarEditTextUserId?.setError(getString(R.string.error_login_000))
+                return@setOnClickListener
+            }
+
+            if (password.isBlank()) {
+                viewBinding?.sugarEditTextUserId?.setError(getString(R.string.error_login_001))
+                return@setOnClickListener
+            }
+
+            viewModel.loginWithEmail(userId, password, {
+                startMainActivity()
+            }, { message ->
+                showToast(message)
+            })
         }
 
         viewBinding?.loginButtonFacebook?.setOnClickListener {
@@ -65,7 +82,7 @@ class LoginFragment: BaseFragment() {
                     startMainActivity()
                 }, {
                 getString(R.string.client_id)
-                    showToast(it?.message ?: getString(R.string.login_fragment_001))
+                    showToast(it?.message ?: getString(R.string.error_login_002))
                     Timber.e(it)
                 }
             )
@@ -104,14 +121,6 @@ class LoginFragment: BaseFragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun isUserIdAvailable(): Boolean {
-        return viewBinding?.sugarEditTextUserId?.isNotBlank() ?: false
-    }
-
-    private fun isPasswordAvailable(): Boolean {
-        return viewBinding?.sugarEditTextPassword?.isNotBlank() ?: false
     }
 
     private fun startMainActivity() {
