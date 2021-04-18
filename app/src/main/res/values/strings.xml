@@ -5,6 +5,12 @@
 
     <string name="ok">확인</string>
 
+    <!-- DetailFragment -->
+    <string name="detail_fragment_000">주소</string>
+    <string name="detail_fragment_001">전화번호</string>
+    <string name="detail_fragment_002">한줄설명</string>
+    <string name="detail_fragment_003">상세설명</string>
+
     <!-- Entry -->
     <string name="login">로그인</string>
     <string name="sign_up">회원가입</string>

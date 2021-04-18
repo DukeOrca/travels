@@ -139,10 +139,4 @@
         <attr name="textInputEditTextHeight" format="reference|dimension"/>
         <attr name="textSize" format="reference|float" />
     </declare-styleable>
-
-    <declare-styleable name="LoginButton">
-        <attr name="symbol" format="reference|integer" />
-        <attr name="text" format="reference|string" />
-        <attr name="textColor2" format="reference|integer" />
-    </declare-styleable>
 </resources>

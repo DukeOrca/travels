@@ -7,18 +7,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.duke.orca.android.kotlin.travels.R
 import com.duke.orca.android.kotlin.travels.base.BaseFragment
 import com.duke.orca.android.kotlin.travels.databinding.FragmentLoginBinding
 import com.duke.orca.android.kotlin.travels.entry.EntryActivity
 import com.duke.orca.android.kotlin.travels.entry.EntryViewModel
-import com.duke.orca.android.kotlin.travels.entry.RequestCode
-import com.duke.orca.android.kotlin.travels.main.MainActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
+import com.duke.orca.android.kotlin.travels.main.view.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 

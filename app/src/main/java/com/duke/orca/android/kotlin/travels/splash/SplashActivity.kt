@@ -19,6 +19,8 @@ class SplashActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(viewBinding?.root)
+        
+        hideNavigation()
 
         Handler(Looper.getMainLooper()).postDelayed({
             Intent(this, EntryActivity::class.java).also {
@@ -30,7 +32,10 @@ class SplashActivity: AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        hideNavigation()
+    }
 
+    private fun hideNavigation() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(false)
             window.insetsController?.let {

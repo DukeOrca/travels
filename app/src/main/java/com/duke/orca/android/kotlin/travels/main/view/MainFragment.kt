@@ -1,4 +1,4 @@
-package com.duke.orca.android.kotlin.travels.main
+package com.duke.orca.android.kotlin.travels.main.view
 
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.TransitionDrawable
@@ -15,28 +15,33 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.duke.orca.android.kotlin.travels.R
 import com.duke.orca.android.kotlin.travels.databinding.FragmentMainBinding
 import com.duke.orca.android.kotlin.travels.main.adapter.MainFragmentStateAdapter
-import com.duke.orca.android.kotlin.travels.util.fadeIn
-import com.duke.orca.android.kotlin.travels.util.fadeOut
-import com.duke.orca.android.kotlin.travels.util.scale
+import com.duke.orca.android.kotlin.travels.main.viewmodel.MainViewModel
+import com.duke.orca.android.kotlin.travels.util.*
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainFragment: Fragment() {
     private val duration = 200
+    private val simpleExoPlayerManager = SimpleExoPlayerManager()
+    private val viewModel by activityViewModels<MainViewModel>()
     private var viewBinding: FragmentMainBinding? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         viewBinding = FragmentMainBinding.inflate(inflater, container, false)
 
         initializeView()
+        initializeLiveData()
 
         return viewBinding?.root
     }
@@ -50,14 +55,46 @@ class MainFragment: Fragment() {
         }
     }
 
+    private fun initializeLiveData() {
+        viewModel.schedule.observe(viewLifecycleOwner, { schedule ->
+            if (schedule == viewModel.currentSchedule) {
+                viewModel.callNavigateDetailFragmentEvent()
+            } else {
+                viewModel.setCurrentSchedule(schedule)
+                simpleExoPlayerManager.stop()
+                simpleExoPlayerManager.play(schedule.audioUrl)
+
+                viewBinding?.relativeLayoutPlayerControlViewContainer?.show()
+                viewBinding?.playerControlView?.findViewById<TextView>(R.id.text_view_tourspotname)?.let {
+                    it.text = schedule.tourspotname
+                }
+            }
+        })
+
+        viewModel.toggleAudioPlaybackStateEvent.observe(viewLifecycleOwner, {
+            if (simpleExoPlayerManager.isLoading() || simpleExoPlayerManager.isPlaying()) {
+                simpleExoPlayerManager.pause()
+            } else {
+                viewBinding?.relativeLayoutPlayerControlViewContainer?.show()
+
+                viewModel.currentSchedule?.let {
+                    simpleExoPlayerManager.resume()
+                } ?: run {
+                    viewModel.setCurrentSchedule(it)
+                    simpleExoPlayerManager.play(it.audioUrl)
+                }
+            }
+        })
+    }
+
     private fun initializeView() {
         val tabTexts = resources.getStringArray(R.array.main_tab_item)
         val tabIcons = arrayOf(
-            getDrawable(R.drawable.ic_baseline_home_24),
-            getDrawable(R.drawable.ic_baseline_notes_24),
-            getDrawable(R.drawable.ic_baseline_location_on_24),
-            getDrawable(R.drawable.ic_baseline_message_24),
-            getDrawable(R.drawable.ic_baseline_settings_24)
+                getDrawable(R.drawable.ic_baseline_home_24),
+                getDrawable(R.drawable.ic_baseline_notes_24),
+                getDrawable(R.drawable.ic_baseline_location_on_24),
+                getDrawable(R.drawable.ic_baseline_message_24),
+                getDrawable(R.drawable.ic_baseline_settings_24)
         )
 
         viewBinding?.let { viewBinding ->
@@ -82,11 +119,17 @@ class MainFragment: Fragment() {
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab) {
-                   animateUnselectedTab(tab)
+                    animateUnselectedTab(tab)
                 }
 
                 override fun onTabReselected(tab: TabLayout.Tab) {}
             })
+
+            viewBinding.playerControlView.findViewById<ImageView>(R.id.image_view_close).setOnClickListener {
+                simpleExoPlayerManager.stop()
+                viewBinding.relativeLayoutPlayerControlViewContainer.hide()
+                viewModel.clearCurrentSchedule()
+            }
         }
     }
 
@@ -94,8 +137,8 @@ class MainFragment: Fragment() {
         tab.customView?.findViewById<TextView>(R.id.text_view)?.fadeOut(duration / 2)
         tab.view.scale(1.5F, duration)
         tab.customView?.findViewById<ImageView>(R.id.image_view)?.setColorFilter(
-            getColor(R.color.white),
-            android.graphics.PorterDuff.Mode.SRC_IN
+                getColor(R.color.white),
+                android.graphics.PorterDuff.Mode.SRC_IN
         )
 
         val transitionDrawable = tab.view.findViewById<FrameLayout>(R.id.frame_layout).background as TransitionDrawable
@@ -107,13 +150,51 @@ class MainFragment: Fragment() {
         tab.customView?.findViewById<TextView>(R.id.text_view)?.fadeIn(duration / 2)
         tab.view.scale(1.0F, duration)
         tab.customView?.findViewById<ImageView>(R.id.image_view)?.setColorFilter(
-            getColor(R.color.lime_green),
-            android.graphics.PorterDuff.Mode.SRC_IN
+                getColor(R.color.lime_green),
+                android.graphics.PorterDuff.Mode.SRC_IN
         )
 
         val transitionDrawable = tab.view.findViewById<FrameLayout>(R.id.frame_layout).background as TransitionDrawable
 
         transitionDrawable.reverseTransition(duration)
+    }
+
+    inner class SimpleExoPlayerManager {
+        fun play(audioUrl: String) {
+            val simpleExoPlayer = SimpleExoPlayer.Builder(requireContext()).build()
+
+            viewBinding?.playerControlView?.player = simpleExoPlayer
+
+            val mediaItem = MediaItem.fromUri(audioUrl)
+
+            simpleExoPlayer.setMediaItem(mediaItem)
+            simpleExoPlayer.prepare()
+            simpleExoPlayer.play()
+        }
+
+        fun pause() {
+            viewBinding?.playerControlView?.player?.playWhenReady = false
+        }
+
+        fun resume() {
+            viewBinding?.playerControlView?.player?.playWhenReady = true
+        }
+
+        fun stop() {
+            viewBinding?.playerControlView?.player?.let {
+                it.stop()
+                it.clearMediaItems()
+            }
+        }
+
+        fun play() {
+            viewBinding?.playerControlView?.player?.play()
+        }
+
+        fun player() = viewBinding?.playerControlView?.player
+
+        fun isPlaying() = viewBinding?.playerControlView?.player?.isPlaying ?: false
+        fun isLoading() = viewBinding?.playerControlView?.player?.isLoading ?: false
     }
 
     @ColorInt

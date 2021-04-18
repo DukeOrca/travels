@@ -1,12 +1,11 @@
-package com.duke.orca.android.kotlin.travels.main
+package com.duke.orca.android.kotlin.travels.main.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.duke.orca.android.kotlin.travels.R
-import com.duke.orca.android.kotlin.travels.network.MainApi
+import com.duke.orca.android.kotlin.travels.main.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

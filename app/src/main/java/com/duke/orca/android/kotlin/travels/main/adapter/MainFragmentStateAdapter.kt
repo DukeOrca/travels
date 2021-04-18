@@ -6,7 +6,7 @@ import com.duke.orca.android.kotlin.travels.home.HomeFragment
 import com.duke.orca.android.kotlin.travels.map.MapFragment
 import com.duke.orca.android.kotlin.travels.message.MessageFragment
 import com.duke.orca.android.kotlin.travels.setting.SettingFragment
-import com.duke.orca.android.kotlin.travels.todo.TodoFragment
+import com.duke.orca.android.kotlin.travels.schedule.view.ScheduleContainerFragment
 import java.security.InvalidParameterException
 
 class MainFragmentStateAdapter(fragment: Fragment): FragmentStateAdapter(fragment) {
@@ -17,7 +17,7 @@ class MainFragmentStateAdapter(fragment: Fragment): FragmentStateAdapter(fragmen
     override fun createFragment(position: Int): Fragment {
         return when(position) {
             0 -> HomeFragment()
-            1 -> TodoFragment()
+            1 -> ScheduleContainerFragment()
             2 -> MapFragment()
             3 -> MessageFragment()
             4 -> SettingFragment()

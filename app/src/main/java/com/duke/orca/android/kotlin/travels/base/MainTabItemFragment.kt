@@ -8,7 +8,7 @@ import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
-import com.duke.orca.android.kotlin.travels.main.MainViewModel
+import com.duke.orca.android.kotlin.travels.main.viewmodel.MainViewModel
 
 abstract class MainTabItemFragment<VB : ViewBinding>: Fragment() {
     private var _viewBinding: VB? = null

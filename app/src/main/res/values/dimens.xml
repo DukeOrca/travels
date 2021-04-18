@@ -15,7 +15,15 @@
     <dimen name="text_size_medium">18sp</dimen>
     <dimen name="text_size_large">22sp</dimen>
 
+    <dimen name="exo_player_controller_height">64dp</dimen>
+    <dimen name="player_control_view_container_height">120dp</dimen>
+
+    <dimen name="padding_micro">4dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+
     <dimen name="button_corner_radius">8dp</dimen>
+
+    <dimen name="img_height_large">224dp</dimen>
 
     <dimen name="login_button_height">56dp</dimen>
 

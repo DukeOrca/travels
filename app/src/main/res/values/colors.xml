@@ -13,4 +13,7 @@
 
     <color name="button_background">@color/white</color>
     <color name="button_text">@color/lime_green</color>
+
+    <!-- #52B669 -->
+    <color name="primary">#52B669</color>
 </resources>

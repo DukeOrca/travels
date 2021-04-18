@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.duke.orca.android.kotlin.travels.R
-import com.duke.orca.android.kotlin.travels.main.MainActivity
+import com.duke.orca.android.kotlin.travels.main.view.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException

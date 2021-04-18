@@ -1,4 +1,4 @@
-package com.duke.orca.android.kotlin.travels.home.adapter
+package com.duke.orca.android.kotlin.travels.schedule.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,26 +8,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.duke.orca.android.kotlin.travels.databinding.TourBinding
-import com.duke.orca.android.kotlin.travels.home.data.Tour
-import timber.log.Timber
+import com.duke.orca.android.kotlin.travels.databinding.ScheduleBinding
+import com.duke.orca.android.kotlin.travels.schedule.data.Schedule
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TourAdapter(private val onItemClick: (Tour) -> Unit): ListAdapter<Tour, TourAdapter.ViewHolder>(DiffCallback()) {
+class ScheduleAdapter(private val onItemClick: (item: Schedule) -> Unit): ListAdapter<Schedule, ScheduleAdapter.ViewHolder>(DiffCallback()) {
     private val simpleDateFormat = SimpleDateFormat("M/d - ", Locale.getDefault())
     private var inflater: LayoutInflater? = null
 
-    inner class ViewHolder(private val binding: TourBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Tour) {
+    inner class ViewHolder(private val binding: ScheduleBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Schedule) {
             binding.textViewSpotName.text = item.tourspotname
             binding.textViewBeginDate.text = item.tourbegindate.format()
             binding.textViewBeginTime.text = item.tourbegintime
 
             Glide.with(binding.root.context)
-                .load(item.tourimg)
-                .transform(CenterCrop(), RoundedCorners(16))
-                .into(binding.imageViewImg)
+                    .load(item.tourimg)
+                    .transform(CenterCrop(), RoundedCorners(16))
+                    .into(binding.imageViewImg)
 
             binding.root.setOnClickListener {
                 onItemClick(item)
@@ -35,16 +34,16 @@ class TourAdapter(private val onItemClick: (Tour) -> Unit): ListAdapter<Tour, To
         }
     }
 
-    private fun from(parent: ViewGroup): ViewHolder {
-        return ViewHolder(TourBinding.inflate(
-            inflater ?: LayoutInflater.from(parent.context),
-            parent,
-            false
-        ))
-    }
+    private fun from(binding: ScheduleBinding) = ViewHolder(binding)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return from(parent)
+        val binding = ScheduleBinding.inflate(inflater ?: run {
+            inflater = LayoutInflater.from(parent.context)
+
+            requireNotNull(inflater)
+        }, parent, false)
+
+        return from(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -54,12 +53,12 @@ class TourAdapter(private val onItemClick: (Tour) -> Unit): ListAdapter<Tour, To
     private fun Date.format() = simpleDateFormat.format(this)
 }
 
-class DiffCallback: DiffUtil.ItemCallback<Tour>() {
-    override fun areItemsTheSame(oldItem: Tour, newItem: Tour): Boolean {
+class DiffCallback: DiffUtil.ItemCallback<Schedule>() {
+    override fun areItemsTheSame(oldItem: Schedule, newItem: Schedule): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: Tour, newItem: Tour): Boolean {
+    override fun areContentsTheSame(oldItem: Schedule, newItem: Schedule): Boolean {
         return oldItem == newItem
     }
 }

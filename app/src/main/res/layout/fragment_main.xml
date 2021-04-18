@@ -17,10 +17,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <RelativeLayout
+        android:id="@+id/relative_layout_player_control_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/player_control_view_container_height"
+        android:background="@drawable/background_rounded_corners_top"
+        android:backgroundTint="@color/primary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.exoplayer2.ui.PlayerControlView
+            android:id="@+id/player_control_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/exo_player_controller_height"
+            app:controller_layout_id="@layout/exo_player_controller_view"
+            app:fastforward_increment="10000"
+            app:repeat_toggle_modes="none"
+            app:resize_mode="fixed_width"
+            app:rewind_increment="10000"
+            app:show_timeout="0"
+            app:use_controller="true" />
+    </RelativeLayout>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:background="@drawable/background_rounded_corners_top"
         android:backgroundTint="@color/white"
         android:clipChildren="false"

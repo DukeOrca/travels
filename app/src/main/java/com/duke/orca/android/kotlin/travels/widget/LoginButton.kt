@@ -51,8 +51,8 @@ class LoginButton: MaterialCardView {
     private fun addTextInputEditText(typedArray: TypedArray) {
         //val backgroundColor = typedArray.getColor(R.styleable.LoginButton_backgroundColor, Color.WHITE)
         val symbol = typedArray.getResourceId(R.styleable.LoginButton_symbol, 0)
-        val text = typedArray.getText(R.styleable.LoginButton_text)
-        val textColor = typedArray.getColor(R.styleable.LoginButton_textColor2, Color.WHITE)
+        val text = typedArray.getText(R.styleable.LoginButton_buttonText)
+        val textColor = typedArray.getColor(R.styleable.LoginButton_buttonTextColor, Color.WHITE)
 
         val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.login_button, this, false)

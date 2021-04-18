@@ -40,17 +40,29 @@
             app:layout_constraintTop_toTopOf="@+id/text_view_begin_date"
             tools:text="- PM 02:00" />
 
-        <ImageView
-            android:id="@+id/image_view_img"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="192dp"
-            android:layout_margin="@dimen/layout_spacing_small"
+            android:layout_height="112dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_spot_name"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_spot_name">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_vertical_dotted_line" />
+
+        <ImageView
+            android:id="@+id/image_view_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/layout_spacing_small"
+
             tools:srcCompat="@drawable/com_facebook_button_background"
             tools:ignore="ContentDescription" />
 
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

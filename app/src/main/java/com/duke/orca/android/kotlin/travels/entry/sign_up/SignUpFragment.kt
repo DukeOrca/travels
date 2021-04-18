@@ -12,7 +12,7 @@ import com.duke.orca.android.kotlin.travels.base.BaseFragment
 import com.duke.orca.android.kotlin.travels.databinding.FragmentSignUpBinding
 import com.duke.orca.android.kotlin.travels.entry.EntryActivity
 import com.duke.orca.android.kotlin.travels.entry.EntryViewModel
-import com.duke.orca.android.kotlin.travels.main.MainActivity
+import com.duke.orca.android.kotlin.travels.main.view.MainActivity
 
 class SignUpFragment: BaseFragment() {
     private var viewBinding: FragmentSignUpBinding? = null

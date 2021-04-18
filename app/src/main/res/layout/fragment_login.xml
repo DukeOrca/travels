@@ -82,9 +82,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/material_button_login"
-            app:symbol="@drawable/ic_facebook_login_100"
-            app:text="페이스북 로그인"
-            app:textColor2="@color/black" />
+            app:buttonText="페이스북 로그인"
+            app:buttonTextColor="@color/black"
+            app:cardCornerRadius="@dimen/button_corner_radius"
+            app:symbol="@drawable/ic_facebook_login_100" />
 
         <com.duke.orca.android.kotlin.travels.widget.LoginButton
             android:id="@+id/login_button_google"
@@ -96,9 +97,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_button_facebook"
-            app:symbol="@drawable/ic_google_login_48"
-            app:text="구글 로그인"
-            app:textColor2="@color/black"/>
+            app:buttonText="구글 로그인"
+            app:buttonTextColor="@color/black"
+            app:cardCornerRadius="@dimen/button_corner_radius"
+            app:symbol="@drawable/ic_google_login_48" />
 
         <com.duke.orca.android.kotlin.travels.widget.LoginButton
             android:id="@+id/login_button_kakao"
@@ -110,23 +112,35 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_button_google"
-            app:symbol="@drawable/ic_kakao_login_36px"
-            app:text="카카오 로그인"
-            app:textColor2="@color/black"/>
+            app:buttonText="카카오 로그인"
+            app:buttonTextColor="@color/black"
+            app:cardCornerRadius="@dimen/button_corner_radius"
+            app:symbol="@drawable/ic_kakao_login_36px" />
 
         <com.duke.orca.android.kotlin.travels.widget.LoginButton
             android:id="@+id/login_button_naver"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/layout_spacing_large"
             android:layout_marginStart="@dimen/layout_spacing_large"
             android:layout_marginTop="@dimen/layout_spacing_small"
+            android:layout_marginEnd="@dimen/layout_spacing_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_button_kakao"
-            app:symbol="@drawable/ic_naver_login_250px"
-            app:text="네이버 로그인"
-            app:textColor2="@color/black"/>
+            app:buttonText="네이버 로그인"
+            app:buttonTextColor="@color/black"
+            app:cardCornerRadius="@dimen/button_corner_radius"
+            app:symbol="@drawable/ic_naver_login_250px" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_spacing_medium"
+            android:backgroundTint="@android:color/transparent"
+            android:clickable="false"
+            android:focusable="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_button_naver" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

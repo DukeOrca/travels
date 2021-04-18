@@ -12,6 +12,17 @@ fun View.scale(scale: Float, duration: Number = 200) {
         .start()
 }
 
+fun View.show() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.hide(invisible: Boolean = false) {
+    if (invisible)
+        this.visibility = View.INVISIBLE
+    else
+        this.visibility = View.GONE
+}
+
 fun View.fadeIn(duration: Number) {
     this.apply {
         alpha = 0F
