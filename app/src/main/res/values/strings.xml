@@ -28,6 +28,9 @@
     <string name="login_fragment_000">비밀번호 찾기</string>
 
     <!-- MainFragment -->
+    <string name="main_fragment_000">나의 여행지</string>
+    <string name="main_fragment_001">상세 투어내역</string>
+
     <string-array name="main_tab_item">
         <item>Home</item>
         <item>Todo</item>

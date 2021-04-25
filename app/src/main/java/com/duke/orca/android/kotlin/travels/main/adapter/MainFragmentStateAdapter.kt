@@ -3,7 +3,7 @@ package com.duke.orca.android.kotlin.travels.main.adapter
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.duke.orca.android.kotlin.travels.home.HomeFragment
-import com.duke.orca.android.kotlin.travels.map.MapFragment
+import com.duke.orca.android.kotlin.travels.map.view.MapFragment
 import com.duke.orca.android.kotlin.travels.message.MessageFragment
 import com.duke.orca.android.kotlin.travels.setting.SettingFragment
 import com.duke.orca.android.kotlin.travels.schedule.view.ScheduleContainerFragment

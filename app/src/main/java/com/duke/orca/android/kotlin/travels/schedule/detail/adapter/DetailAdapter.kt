@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.duke.orca.android.kotlin.travels.databinding.DetailItemBinding
+import com.duke.orca.android.kotlin.travels.databinding.DetailBinding
 import com.duke.orca.android.kotlin.travels.util.hide
 import com.duke.orca.android.kotlin.travels.util.show
 
-class DetailItemAdapter: ListAdapter<DetailItem, DetailItemAdapter.ViewHolder>(DiffCallback()) {
+class DetailAdapter: ListAdapter<DetailItem, DetailAdapter.ViewHolder>(DiffCallback()) {
     private var inflater: LayoutInflater? = null
 
-    inner class ViewHolder(private val binding: DetailItemBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: DetailBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DetailItem) {
             item.iconId?.let {
                 binding.imageViewIcon.show()
@@ -31,7 +31,7 @@ class DetailItemAdapter: ListAdapter<DetailItem, DetailItemAdapter.ViewHolder>(D
     }
 
     private fun from(inflater: LayoutInflater, parent: ViewGroup): ViewHolder {
-        val binding = DetailItemBinding.inflate(inflater, parent, false)
+        val binding = DetailBinding.inflate(inflater, parent, false)
 
         return ViewHolder(binding)
     }

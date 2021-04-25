@@ -31,6 +31,12 @@ class HomeFragment: MainTabItemFragment<FragmentHomeBinding>() {
             tourAdapter.submitList(it)
         })
 
+        viewBinding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshTourlist {
+                viewBinding.swipeRefreshLayout.isRefreshing = false
+            }
+        }
+
         return view
     }
 

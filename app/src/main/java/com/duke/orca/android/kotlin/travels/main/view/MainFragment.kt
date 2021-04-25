@@ -30,32 +30,42 @@ import com.google.android.material.tabs.TabLayoutMediator
 class MainFragment: Fragment() {
     private val duration = 200
     private val simpleExoPlayerManager = SimpleExoPlayerManager()
+
     private val viewModel by activityViewModels<MainViewModel>()
-    private var viewBinding: FragmentMainBinding? = null
+    private var _viewBinding: FragmentMainBinding? = null
+    private val viewBinding: FragmentMainBinding
+        get() = _viewBinding!!
+
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
-        viewBinding = FragmentMainBinding.inflate(inflater, container, false)
+    ): View {
+        _viewBinding = FragmentMainBinding.inflate(inflater, container, false)
 
+        initializeToolbar()
         initializeView()
         initializeLiveData()
 
-        return viewBinding?.root
+        return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewBinding?.tabLayout?.getTabAt(0)?.let {
+        viewBinding.tabLayout.getTabAt(0)?.let {
             it.select()
+            changeToolBarByTabPosition(0)
             animateSelectedTab(it)
         }
     }
 
     private fun initializeLiveData() {
+        viewModel.viewPager2UserInputEnabled.observe(viewLifecycleOwner, {
+            viewBinding.viewPager2.isUserInputEnabled = it
+        })
+
         viewModel.schedule.observe(viewLifecycleOwner, { schedule ->
             if (schedule == viewModel.currentSchedule) {
                 viewModel.callNavigateDetailFragmentEvent()
@@ -64,8 +74,8 @@ class MainFragment: Fragment() {
                 simpleExoPlayerManager.stop()
                 simpleExoPlayerManager.play(schedule.audioUrl)
 
-                viewBinding?.relativeLayoutPlayerControlViewContainer?.show()
-                viewBinding?.playerControlView?.findViewById<TextView>(R.id.text_view_tourspotname)?.let {
+                viewBinding.relativeLayoutPlayerControlViewContainer.show()
+                viewBinding.playerControlView.findViewById<TextView>(R.id.text_view_tourspotname)?.let {
                     it.text = schedule.tourspotname
                 }
             }
@@ -75,7 +85,7 @@ class MainFragment: Fragment() {
             if (simpleExoPlayerManager.isLoading() || simpleExoPlayerManager.isPlaying()) {
                 simpleExoPlayerManager.pause()
             } else {
-                viewBinding?.relativeLayoutPlayerControlViewContainer?.show()
+                viewBinding.relativeLayoutPlayerControlViewContainer.show()
 
                 viewModel.currentSchedule?.let {
                     simpleExoPlayerManager.resume()
@@ -84,6 +94,10 @@ class MainFragment: Fragment() {
                     simpleExoPlayerManager.play(it.audioUrl)
                 }
             }
+        })
+
+        viewModel.mapSchedule.observe(viewLifecycleOwner, {
+            viewBinding.viewPager2.setCurrentItem(2, true)
         })
     }
 
@@ -97,40 +111,46 @@ class MainFragment: Fragment() {
                 getDrawable(R.drawable.ic_baseline_settings_24)
         )
 
-        viewBinding?.let { viewBinding ->
-            viewBinding.viewPager2.adapter = MainFragmentStateAdapter(this)
-            TabLayoutMediator(viewBinding.tabLayout, viewBinding.viewPager2) { tab, position ->
-                tab.customView = layoutInflater.inflate(R.layout.tab_custom_view, tab.parent, false)
-                tab.customView?.findViewById<LinearLayout>(R.id.linear_layout)
-                tab.customView?.findViewById<TextView>(R.id.text_view)?.text = tabTexts[position]
-                tab.customView?.findViewById<ImageView>(R.id.image_view)?.setImageDrawable(tabIcons[position])
-            }.attach()
+        viewBinding.viewPager2.adapter = MainFragmentStateAdapter(this)
+        TabLayoutMediator(viewBinding.tabLayout, viewBinding.viewPager2) { tab, position ->
+            tab.customView = layoutInflater.inflate(R.layout.tab_custom_view, tab.parent, false)
+            tab.customView?.findViewById<LinearLayout>(R.id.linear_layout)
+            tab.customView?.findViewById<TextView>(R.id.text_view)?.text = tabTexts[position]
+            tab.customView?.findViewById<ImageView>(R.id.image_view)?.setImageDrawable(tabIcons[position])
+        }.attach()
 
-            val viewGroup = viewBinding.tabLayout.getChildAt(0) as ViewGroup
+        val viewGroup = viewBinding.tabLayout.getChildAt(0) as ViewGroup
 
-            if (viewGroup.getChildAt(0) is ViewGroup) {
-                (viewGroup.getChildAt(0) as ViewGroup).clipToPadding = false
-                (viewGroup.getChildAt(0) as ViewGroup).clipChildren = false
-            }
-
-            viewBinding.tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    animateSelectedTab(tab)
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab) {
-                    animateUnselectedTab(tab)
-                }
-
-                override fun onTabReselected(tab: TabLayout.Tab) {}
-            })
-
-            viewBinding.playerControlView.findViewById<ImageView>(R.id.image_view_close).setOnClickListener {
-                simpleExoPlayerManager.stop()
-                viewBinding.relativeLayoutPlayerControlViewContainer.hide()
-                viewModel.clearCurrentSchedule()
-            }
+        if (viewGroup.getChildAt(0) is ViewGroup) {
+            (viewGroup.getChildAt(0) as ViewGroup).clipChildren = false
+            (viewGroup.getChildAt(0) as ViewGroup).clipToPadding = false
         }
+
+        viewBinding.tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                animateSelectedTab(tab)
+                changeToolBarByTabPosition(tab.position)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                animateUnselectedTab(tab)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+
+        viewBinding.playerControlView.findViewById<ImageView>(R.id.image_view_close).setOnClickListener {
+            simpleExoPlayerManager.stop()
+            viewBinding.relativeLayoutPlayerControlViewContainer.hide()
+            viewModel.clearCurrentSchedule()
+        }
+    }
+
+    private fun initializeToolbar() {
+        val activity = requireActivity()
+
+        if (activity is MainActivity)
+            activity.setSupportActionBar(viewBinding.toolbar)
     }
 
     private fun animateSelectedTab(tab: TabLayout.Tab) {
@@ -159,11 +179,34 @@ class MainFragment: Fragment() {
         transitionDrawable.reverseTransition(duration)
     }
 
+    private fun changeToolBarByTabPosition(position: Int) {
+        when(position) {
+            0 -> {
+                viewBinding.textViewTitle.text = getString(R.string.main_fragment_000)
+                viewBinding.imageViewSort.show()
+            }
+            1 -> {
+                viewBinding.textViewTitle.text = getString(R.string.main_fragment_001)
+                viewBinding.imageViewSort.hide()
+            }
+            2 -> {
+                viewBinding.toolbar.hide()
+                viewBinding.imageViewSort.hide()
+            }
+            3 -> {
+                viewBinding.imageViewSort.hide()
+            }
+            4 -> {
+                viewBinding.imageViewSort.hide()
+            }
+        }
+    }
+
     inner class SimpleExoPlayerManager {
         fun play(audioUrl: String) {
             val simpleExoPlayer = SimpleExoPlayer.Builder(requireContext()).build()
 
-            viewBinding?.playerControlView?.player = simpleExoPlayer
+            viewBinding.playerControlView.player = simpleExoPlayer
 
             val mediaItem = MediaItem.fromUri(audioUrl)
 
@@ -173,28 +216,22 @@ class MainFragment: Fragment() {
         }
 
         fun pause() {
-            viewBinding?.playerControlView?.player?.playWhenReady = false
+            viewBinding.playerControlView.player?.playWhenReady = false
         }
 
         fun resume() {
-            viewBinding?.playerControlView?.player?.playWhenReady = true
+            viewBinding.playerControlView.player?.playWhenReady = true
         }
 
         fun stop() {
-            viewBinding?.playerControlView?.player?.let {
+            viewBinding.playerControlView.player?.let {
                 it.stop()
                 it.clearMediaItems()
             }
         }
 
-        fun play() {
-            viewBinding?.playerControlView?.player?.play()
-        }
-
-        fun player() = viewBinding?.playerControlView?.player
-
-        fun isPlaying() = viewBinding?.playerControlView?.player?.isPlaying ?: false
-        fun isLoading() = viewBinding?.playerControlView?.player?.isLoading ?: false
+        fun isPlaying() = viewBinding.playerControlView.player?.isPlaying ?: false
+        fun isLoading() = viewBinding.playerControlView.player?.isLoading ?: false
     }
 
     @ColorInt
